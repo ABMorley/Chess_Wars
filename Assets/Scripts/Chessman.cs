@@ -262,13 +262,11 @@ public class Chessman : MonoBehaviour
         {
             GameObject cp = sc.GetPosition(x, y);
 
+            // Debug.Log($"{x}, {y}, {cp}");
+
             if (cp == null)
             {
                 MovePlateSpawn(x, y);
-            }
-            else if (cp.GetComponent<Chessman>().player != player)
-            {
-                MovePlateAttackSpawn(x, y);
             }
         }
     }

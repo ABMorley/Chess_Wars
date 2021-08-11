@@ -98,18 +98,21 @@ MonoBehaviour:
   controller: {fileID: 0}
   movePlate: {fileID: 4427528937630144105, guid: 975cd21375dfdf440977be8479f87330,
     type: 3}
-  black_queen: {fileID: 21300000, guid: 815d1272350ed474fa30d14ae7ca13b0, type: 3}
-  black_knight: {fileID: 21300000, guid: a1f14d99584a32845bff5722f459abc3, type: 3}
-  black_bishop: {fileID: 21300000, guid: 9b6975579503d444a83355c7dba7e161, type: 3}
-  black_king: {fileID: 21300000, guid: e805a97877d4c8a4ca5ad67ee61f2d37, type: 3}
-  black_rook: {fileID: 21300000, guid: 177d305ed1420934394f941f72171fd2, type: 3}
-  black_pawn: {fileID: 21300000, guid: 58629f84b4009054595cf4b9fb9ba154, type: 3}
-  white_queen: {fileID: 21300000, guid: 55814193347751f47bca417f134824b0, type: 3}
-  white_knight: {fileID: 21300000, guid: b3b9b8dbf382cc04687d6bb9db9af578, type: 3}
-  white_bishop: {fileID: 21300000, guid: 412efd093287a2e498954c11f4c6bb54, type: 3}
-  white_king: {fileID: 21300000, guid: 2648b481cac0d574fb94e5c49b2b2130, type: 3}
-  white_rook: {fileID: 21300000, guid: fa0a2ff3626721748bf657c7c6022e11, type: 3}
-  white_pawn: {fileID: 21300000, guid: da81633aa03645145ae1b41587366583, type: 3}
+  black_main_castle: {fileID: 21300000, guid: 13add676c531eb848b92bcb823609d4a, type: 3}
+  black_cavalry: {fileID: 21300000, guid: a1f14d99584a32845bff5722f459abc3, type: 3}
+  black_archer: {fileID: 21300000, guid: 9b6975579503d444a83355c7dba7e161, type: 3}
+  black_mage: {fileID: 21300000, guid: e805a97877d4c8a4ca5ad67ee61f2d37, type: 3}
+  black_castle: {fileID: 21300000, guid: 177d305ed1420934394f941f72171fd2, type: 3}
+  black_foot_soldier: {fileID: 21300000, guid: 58629f84b4009054595cf4b9fb9ba154, type: 3}
+  white_bottom_main_castle: {fileID: 21300000, guid: 37352a3cfb3f0ba4bb3efab4990486d4,
+    type: 3}
+  white_top_main_castle: {fileID: 21300000, guid: 88feaa14edd99ad4f92c8982b5aebe9b,
+    type: 3}
+  white_cavalry: {fileID: 21300000, guid: b3b9b8dbf382cc04687d6bb9db9af578, type: 3}
+  white_archer: {fileID: 21300000, guid: 412efd093287a2e498954c11f4c6bb54, type: 3}
+  white_mage: {fileID: 21300000, guid: 2648b481cac0d574fb94e5c49b2b2130, type: 3}
+  white_castle: {fileID: 21300000, guid: fa0a2ff3626721748bf657c7c6022e11, type: 3}
+  white_foot_soldier: {fileID: 21300000, guid: da81633aa03645145ae1b41587366583, type: 3}
 --- !u!61 &7068999908475216718
 BoxCollider2D:
   m_ObjectHideFlags: 0

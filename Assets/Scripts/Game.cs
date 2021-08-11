@@ -12,7 +12,7 @@ public class Game : MonoBehaviour
     //Matrices needed, positions of each of the GameObjects
     //Also separate arrays for the players in order to easily keep track of them all
     //Keep in mind that the same objects are going to be in "positions" and "playerBlack"/"playerWhite"
-    private GameObject[,] positions = new GameObject[8, 8];
+    private GameObject[,] positions = new GameObject[16, 8];
     private GameObject[] playerBlack = new GameObject[16];
     private GameObject[] playerWhite = new GameObject[16];
 
@@ -26,23 +26,26 @@ public class Game : MonoBehaviour
     //that Unity can call for you
     public void Start()
     {
-        playerWhite = new GameObject[] { Create("white_rook", 0, 0), Create("white_knight", 1, 0),
-            Create("white_bishop", 2, 0), Create("white_queen", 3, 0), Create("white_king", 4, 0),
-            Create("white_bishop", 5, 0), Create("white_knight", 6, 0), Create("white_rook", 7, 0),
-            Create("white_pawn", 0, 1), Create("white_pawn", 1, 1), Create("white_pawn", 2, 1),
-            Create("white_pawn", 3, 1), Create("white_pawn", 4, 1), Create("white_pawn", 5, 1),
-            Create("white_pawn", 6, 1), Create("white_pawn", 7, 1) };
-        playerBlack = new GameObject[] { Create("black_rook", 0, 7), Create("black_knight",1,7),
-            Create("black_bishop",2,7), Create("black_queen",3,7), Create("black_king",4,7),
-            Create("black_bishop",5,7), Create("black_knight",6,7), Create("black_rook",7,7),
-            Create("black_pawn", 0, 6), Create("black_pawn", 1, 6), Create("black_pawn", 2, 6),
-            Create("black_pawn", 3, 6), Create("black_pawn", 4, 6), Create("black_pawn", 5, 6),
-            Create("black_pawn", 6, 6), Create("black_pawn", 7, 6) };
+        playerWhite = new GameObject[] { Create("white_mage", 0, 0), Create("white_archer", 0, 1), 
+            Create("white_archer", 0, 2), Create("white_bottom_main_castle", 0, 3), Create("white_top_main_castle", 0, 4), 
+            Create("white_archer", 0, 5), Create("white_archer", 0, 6), Create("white_mage", 0, 7), 
+            Create("white_castle", 1, 0), Create("white_cavalry", 1, 1), Create("white_foot_soldier", 1, 2), 
+            Create("white_foot_soldier", 1, 3), Create("white_foot_soldier", 1, 4), Create("white_foot_soldier", 1, 5), 
+            Create("white_cavalry", 1, 6), Create("white_castle", 1, 7) };
+        playerBlack = new GameObject[] { Create("black_mage", 15, 0), Create("black_archer",15,1),
+            Create("black_archer",15,2), Create("black_main_castle",15,3), Create("black_archer",15,5), 
+            Create("black_archer",15,6), Create("black_mage",15,7), Create("black_castle", 14, 0), 
+            Create("black_cavalry", 14, 1), Create("black_foot_soldier", 14, 2),Create("black_foot_soldier", 14, 3), 
+            Create("black_foot_soldier", 14, 4), Create("black_foot_soldier", 14, 5),Create("black_cavalry", 14, 6), 
+            Create("black_castle", 14, 7) };
 
         //Set all piece positions on the positions board
         for (int i = 0; i < playerBlack.Length; i++)
         {
             SetPosition(playerBlack[i]);
+        }
+        for (int i = 0; i < playerWhite.Length; i++)
+        {
             SetPosition(playerWhite[i]);
         }
     }
