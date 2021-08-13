@@ -1,0 +1,44 @@
+Main Game:
+
+grid (8x16)
+								|Ma|Cas|
+low speed = 1 square			|Ar|Ca|
+medium speed = 2 squares		|Ar|Ft|
+high speed = 3 squares			|MC|Ft|
+								|MC|Ft|
+low damage = 1 hp				|Ar|Ft|
+medium damage = 2 hp			|Ar|Ca|
+high damage = 3 hp				|Ma|Cas|
+
+low health = 3 hp
+medium health = 6 hp
+high health = 10 hp	
+
+Footsoldier		medium health	low damage		low speed		=	4
+Archer			low health		medium damage	medium speed	=	5
+Castle			high health		low damage		low speed		=	5
+Cavalry			medium health	medium damage	high speed		=	7
+Mage			low health		high damage		medium speed	=	6
+Main Castle 	15 health		0 damage		0 speed
+
+archers can shoot 3 squares
+mages can either attack units or heal 3 squares with direct line of sight
+move > attack (if possible)
+ablitity to skip move turn
+to win you can either kill all enemy units or destroy the main tower
+
+sword swinging animations for Footsoldier, Castle and Cavalry
+blue fireball for Mage
+Arrow for Archer
+
+Extra stuff:
+
+pre-game unit selection
+edge 3 rows available
+pre-game points (50?) uses points next to unit stats
+
+AI enemy?
+Point choosing? (30, 40, 50?)
+Energy meter to avoid spamming one unit?
+Choice of unit colour
+Health bar that appears when unit is selected
