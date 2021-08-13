@@ -13,6 +13,20 @@ public class Chessman : MonoBehaviour
     private int xBoard = -1;
     private int yBoard = -1;
 
+    // Variable representing the speed of a unit
+    private int speed = 0;
+    // Variable representing the kill range of a unit
+    private int minKillDistance = 1;
+    private int maxKillDistance = 1;
+    private bool lineOfSight = false;
+    // Variable representing health
+    private int health;
+    private int maxHealth;
+    // Variable representing attack damage
+    private int damage;
+    // Variable representing heal distance, or -1 to disable
+    private int healDistance = -1;
+
     //Variable for keeping track of the player it belongs to "black" or "white"
     private string player;
 
@@ -44,6 +58,43 @@ public class Chessman : MonoBehaviour
             case "white_mage": this.GetComponent<SpriteRenderer>().sprite = white_mage; player = "white"; break;
             case "white_castle": this.GetComponent<SpriteRenderer>().sprite = white_castle; player = "white"; break;
             case "white_foot_soldier": this.GetComponent<SpriteRenderer>().sprite = white_foot_soldier; player = "white"; break;
+        }
+        switch (this.name)
+        {
+            case "black_castle":
+            case "white_castle":
+                speed = 1;
+                maxHealth = health = 10;
+                damage = 1;
+                break;
+            case "black_foot_soldier":
+            case "white_foot_soldier":
+                speed = 1;
+                maxHealth = health = 6;
+                damage = 1;
+                break;
+            case "black_archer":
+            case "white_archer":
+                speed = 2;
+                maxHealth = health = 3;
+                damage = 2;
+                minKillDistance = 2;
+                maxKillDistance = 4;
+                break;
+            case "black_mage":
+            case "white_mage":
+                speed = 2;
+                maxHealth = health = 3;
+                damage = 3;
+                lineOfSight = true;
+                healDistance = 1;
+                break;
+            case "black_cavalry":
+            case "white_cavalry":
+                speed = 3;
+                maxHealth = health = 6;
+                damage = 2;
+                break;
         }
     }
 
@@ -109,151 +160,39 @@ public class Chessman : MonoBehaviour
 
     public void InitiateMovePlates()
     {
-        switch (this.name)
+        for (int x = xBoard - speed; x <= xBoard + speed; x++)
         {
-                // low movement
-            case "black_castle":
-            case "white_castle":
-                LowSpeed();
-                break;
-                // medium movement
-            case "black_foot_soldier":
-            case "black_archer":
-            case "black_mage":
-            case "white_foot_soldier":
-            case "white_archer":
-            case "white_mage":
-                MediumSpeed();
-                break;
-                // high movement
-            case "black_cavalry":
-            case "white_cavalry":
-                HighSpeed();
-                break;
+            for (int y = yBoard - speed; y <= yBoard + speed; y++)
+            {
+                if (x == xBoard && y == yBoard) continue;  // skip checking own position
+                PointMovePlate(x, y);
+            }
         }
-    }
 
-    public void LowSpeed()
-    {
-        PointMovePlate(xBoard, yBoard + 1);
-        PointMovePlate(xBoard, yBoard - 1);
-        PointMovePlate(xBoard - 1, yBoard + 0);
-        PointMovePlate(xBoard - 1, yBoard - 1);
-        PointMovePlate(xBoard - 1, yBoard + 1);
-        PointMovePlate(xBoard + 1, yBoard + 0);
-        PointMovePlate(xBoard + 1, yBoard - 1);
-        PointMovePlate(xBoard + 1, yBoard + 1);
+        for (int x = xBoard - maxKillDistance; x <= xBoard + maxKillDistance; x++)
+        {
+            for (int y = yBoard - maxKillDistance; y <= yBoard + maxKillDistance; y++)
+            {
+                if (xBoard - minKillDistance <= x && x <= xBoard + minKillDistance
+                    && yBoard - minKillDistance <= y && y <= yBoard + minKillDistance)
+                {
+                    continue;  // skip checking own position or below min kill distance
+                }
+                PointAttackPlate(x, y);
+            }
+        }
 
-        PointAttackPlate(xBoard, yBoard + 1);
-        PointAttackPlate(xBoard, yBoard - 1);
-        PointAttackPlate(xBoard - 1, yBoard + 0);
-        PointAttackPlate(xBoard - 1, yBoard - 1);
-        PointAttackPlate(xBoard - 1, yBoard + 1);
-        PointAttackPlate(xBoard + 1, yBoard + 0);
-        PointAttackPlate(xBoard + 1, yBoard - 1);
-        PointAttackPlate(xBoard + 1, yBoard + 1);
-    }
-
-    public void MediumSpeed()
-    {
-        PointMovePlate(xBoard, yBoard + 2);
-        PointMovePlate(xBoard + 1, yBoard + 2); 
-        PointMovePlate(xBoard + 2, yBoard + 2);
-        PointMovePlate(xBoard + 2, yBoard + 1);
-        PointMovePlate(xBoard + 2, yBoard);
-        PointMovePlate(xBoard + 2, yBoard - 1);
-        PointMovePlate(xBoard + 2, yBoard - 2);
-        PointMovePlate(xBoard + 1, yBoard - 2);
-        PointMovePlate(xBoard, yBoard - 2);
-        PointMovePlate(xBoard - 1, yBoard - 2);
-        PointMovePlate(xBoard - 2, yBoard - 2);
-        PointMovePlate(xBoard - 2, yBoard - 1);
-        PointMovePlate(xBoard - 2, yBoard);
-        PointMovePlate(xBoard - 2, yBoard + 1);
-        PointMovePlate(xBoard - 2, yBoard + 2);
-        PointMovePlate(xBoard - 1, yBoard + 2);
-        PointMovePlate(xBoard, yBoard + 1);
-        PointMovePlate(xBoard, yBoard - 1);
-        PointMovePlate(xBoard - 1, yBoard + 0);
-        PointMovePlate(xBoard - 1, yBoard - 1);
-        PointMovePlate(xBoard - 1, yBoard + 1);
-        PointMovePlate(xBoard + 1, yBoard + 0);
-        PointMovePlate(xBoard + 1, yBoard - 1);
-        PointMovePlate(xBoard + 1, yBoard + 1);
-
-        PointAttackPlate(xBoard, yBoard + 1);
-        PointAttackPlate(xBoard, yBoard - 1);
-        PointAttackPlate(xBoard - 1, yBoard + 0);
-        PointAttackPlate(xBoard - 1, yBoard - 1);
-        PointAttackPlate(xBoard - 1, yBoard + 1);
-        PointAttackPlate(xBoard + 1, yBoard + 0);
-        PointAttackPlate(xBoard + 1, yBoard - 1);
-        PointAttackPlate(xBoard + 1, yBoard + 1);
-    }
-
-    public void HighSpeed()
-    {
-        PointMovePlate(xBoard, yBoard + 3);
-        PointMovePlate(xBoard + 1, yBoard + 3);
-        PointMovePlate(xBoard + 2, yBoard + 3);
-        PointMovePlate(xBoard + 3, yBoard + 3);
-        PointMovePlate(xBoard + 3, yBoard + 2);
-        PointMovePlate(xBoard + 3, yBoard + 1);
-        PointMovePlate(xBoard + 3, yBoard);
-        PointMovePlate(xBoard + 3, yBoard - 1);
-        PointMovePlate(xBoard + 3, yBoard - 2);
-        PointMovePlate(xBoard + 3, yBoard - 3);
-        PointMovePlate(xBoard + 2, yBoard - 3);
-        PointMovePlate(xBoard + 1, yBoard - 3);
-        PointMovePlate(xBoard, yBoard - 3);
-        PointMovePlate(xBoard - 1, yBoard - 3);
-        PointMovePlate(xBoard - 2, yBoard - 3);
-        PointMovePlate(xBoard - 3, yBoard - 3);
-        PointMovePlate(xBoard - 3, yBoard - 2);
-        PointMovePlate(xBoard - 3, yBoard - 1);
-        PointMovePlate(xBoard - 3, yBoard);
-        PointMovePlate(xBoard - 3, yBoard + 1);
-        PointMovePlate(xBoard - 3, yBoard + 2);
-        PointMovePlate(xBoard - 3, yBoard + 3);
-        PointMovePlate(xBoard - 2, yBoard + 3);
-        PointMovePlate(xBoard - 1, yBoard + 3);
-        PointMovePlate(xBoard, yBoard + 2);
-        PointMovePlate(xBoard + 1, yBoard + 2); 
-        PointMovePlate(xBoard + 2, yBoard + 2);
-        PointMovePlate(xBoard + 2, yBoard + 1);
-        PointMovePlate(xBoard + 2, yBoard);
-        PointMovePlate(xBoard + 2, yBoard - 1);
-        PointMovePlate(xBoard + 2, yBoard - 2);
-        PointMovePlate(xBoard + 1, yBoard - 2);
-        PointMovePlate(xBoard, yBoard - 2);
-        PointMovePlate(xBoard - 1, yBoard - 2);
-        PointMovePlate(xBoard - 2, yBoard - 2);
-        PointMovePlate(xBoard - 2, yBoard - 1);
-        PointMovePlate(xBoard - 2, yBoard);
-        PointMovePlate(xBoard - 2, yBoard + 1);
-        PointMovePlate(xBoard - 2, yBoard + 2);
-        PointMovePlate(xBoard - 1, yBoard + 2);
-        PointMovePlate(xBoard, yBoard + 1);
-        PointMovePlate(xBoard, yBoard - 1);
-        PointMovePlate(xBoard - 1, yBoard + 0);
-        PointMovePlate(xBoard - 1, yBoard - 1);
-        PointMovePlate(xBoard - 1, yBoard + 1);
-        PointMovePlate(xBoard + 1, yBoard + 0);
-        PointMovePlate(xBoard + 1, yBoard - 1);
-        PointMovePlate(xBoard + 1, yBoard + 1);
-
-        PointAttackPlate(xBoard, yBoard + 1);
-        PointAttackPlate(xBoard, yBoard - 1);
-        PointAttackPlate(xBoard - 1, yBoard + 0);
-        PointAttackPlate(xBoard - 1, yBoard - 1);
-        PointAttackPlate(xBoard - 1, yBoard + 1);
-        PointAttackPlate(xBoard + 1, yBoard + 0);
-        PointAttackPlate(xBoard + 1, yBoard - 1);
-        PointAttackPlate(xBoard + 1, yBoard + 1);
-    }
-    public void AttackMovePlate()
-    {
-        
+        if (healDistance >= 0)
+        {
+            for (int x = xBoard - healDistance; x <= xBoard + healDistance; x++)
+            {
+                for (int y = yBoard - healDistance; y <= yBoard + healDistance; y++)
+                {
+                    // if (x == xBoard && y == yBoard) continue;  // skip checking own position
+                    PointHealPlate(x, y);
+                }
+            }
+        }
     }
     public void PointMovePlate(int x, int y)
     {
@@ -279,6 +218,18 @@ public class Chessman : MonoBehaviour
             if (sc.GetPosition(x, y) != null && sc.GetPosition(x, y).GetComponent<Chessman>().player != player )
             {
                 MovePlateAttackSpawn(x, y);
+            }
+        }
+    }
+
+    public void PointHealPlate(int x, int y)
+    {
+        Game sc = controller.GetComponent<Game>();
+        if (sc.PositionOnBoard(x, y))
+        {
+            if (sc.GetPosition(x, y) != null && sc.GetPosition(x, y).GetComponent<Chessman>().player == player )
+            {
+                MovePlateHealSpawn(x, y);
             }
         }
     }
@@ -323,7 +274,30 @@ public class Chessman : MonoBehaviour
         GameObject mp = Instantiate(movePlate, new Vector3(x, y, -3.0f), Quaternion.identity);
 
         MovePlate mpScript = mp.GetComponent<MovePlate>();
-        mpScript.attack = true;
+        mpScript.type = MovePlateType.attack;
+        mpScript.SetReference(gameObject);
+        mpScript.SetCoords(matrixX, matrixY);
+    }
+
+    public void MovePlateHealSpawn(int matrixX, int matrixY)
+    {
+        //Get the board value in order to convert to xy coords
+        float x = matrixX;
+        float y = matrixY;
+
+        //Adjust by variable offset
+        x *= 0.88f;
+        y *= 0.88f;
+
+        //Add constants (pos 0,0)
+        x += -6.64f;
+        y += -3.1f;
+
+        //Set actual unity values
+        GameObject mp = Instantiate(movePlate, new Vector3(x, y, -3.0f), Quaternion.identity);
+
+        MovePlate mpScript = mp.GetComponent<MovePlate>();
+        mpScript.type = MovePlateType.heal;
         mpScript.SetReference(gameObject);
         mpScript.SetCoords(matrixX, matrixY);
     }
