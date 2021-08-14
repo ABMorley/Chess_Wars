@@ -4,6 +4,26 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+enum PlayerTurn
+{
+    whiteMove,
+    whiteAttack,
+    blackMove,
+    blackAttack
+}
+
+public enum PlayerSide
+{
+    white,
+    black
+}
+
+public enum TurnType
+{
+    move,
+    attack
+}
+
 public class Game : MonoBehaviour
 {
     //Reference from Unity IDE
@@ -17,7 +37,7 @@ public class Game : MonoBehaviour
     private GameObject[] playerWhite = new GameObject[16];
 
     //current turn
-    private string currentPlayer = "white";
+    private PlayerTurn currentTurn = PlayerTurn.whiteMove;
 
     //Game Ending
     private bool gameOver = false;
@@ -85,9 +105,34 @@ public class Game : MonoBehaviour
         return true;
     }
 
-    public string GetCurrentPlayer()
+    public PlayerSide GetCurrentPlayer()
     {
-        return currentPlayer;
+        switch (currentTurn)
+        {
+            case PlayerTurn.whiteMove:
+            case PlayerTurn.whiteAttack:
+                return PlayerSide.white;
+            case PlayerTurn.blackMove:
+            case PlayerTurn.blackAttack:
+                return PlayerSide.black;
+            default:
+                return PlayerSide.white;
+        }
+    }
+
+    public TurnType GetCurrentTurnType()
+    {
+        switch (currentTurn)
+        {
+            case PlayerTurn.whiteMove:
+            case PlayerTurn.blackMove:
+                return TurnType.move;
+            case PlayerTurn.whiteAttack:
+            case PlayerTurn.blackAttack:
+                return TurnType.attack;
+            default:
+                return TurnType.move;
+        }
     }
 
     public bool IsGameOver()
@@ -97,14 +142,20 @@ public class Game : MonoBehaviour
 
     public void NextTurn()
     {
-        if (currentPlayer == "white")
+        switch (currentTurn)
         {
-            currentPlayer = "black";
+            case PlayerTurn.whiteMove:
+                currentTurn = PlayerTurn.whiteAttack; break;
+            case PlayerTurn.whiteAttack:
+                currentTurn = PlayerTurn.blackMove; break;
+            case PlayerTurn.blackMove:
+                currentTurn = PlayerTurn.blackAttack; break;
+            case PlayerTurn.blackAttack:
+            default:
+                currentTurn = PlayerTurn.whiteMove; break;
         }
-        else
-        {
-            currentPlayer = "white";
-        }
+
+        Debug.Log($"Current turn: {currentTurn}");
     }
 
     public void Update()
@@ -116,9 +167,14 @@ public class Game : MonoBehaviour
             //Using UnityEngine.SceneManagement is needed here
             SceneManager.LoadScene("Game"); //Restarts the game by loading the scene over again
         }
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             MovePlate.DestroyMovePlates();
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            MovePlate.DestroyMovePlates();
+            NextTurn();  // TODO: add skip turn button or other solution
         }
     }
     
