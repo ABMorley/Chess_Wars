@@ -26,21 +26,27 @@ public class MovePlate : MonoBehaviour
 
     public void Start()
     {
-        if (type == MovePlateType.attack)
+        if (type == MovePlateType.move)
         {
-            //Set to red
+            // Set to black
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+        }
+        else if (type == MovePlateType.attack)
+        {
+            // Set to red
             gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
         }
         else if (type == MovePlateType.heal)
         {
-            //Set to green
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+            // Set to purple
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(0.7f, 0.2f, 1.0f, 1.0f);
         }
     }
 
     public void OnMouseUp()
     {
         controller = GameObject.FindGameObjectWithTag("GameController");
+        Chessman me = reference.GetComponent<Chessman>();
 
         if (type == MovePlateType.move)
         {
@@ -49,39 +55,34 @@ public class MovePlate : MonoBehaviour
                 reference.GetComponent<Chessman>().GetYBoard());
 
             //Move reference chess piece to this position
-            reference.GetComponent<Chessman>().SetXBoard(matrixX);
-            reference.GetComponent<Chessman>().SetYBoard(matrixY);
-            reference.GetComponent<Chessman>().SetCoords();
+            me.SetXBoard(matrixX);
+            me.SetYBoard(matrixY);
+            me.SetCoords();
 
             //Update the matrix
             controller.GetComponent<Game>().SetPosition(reference);
-
-            //Switch Current Player
-            controller.GetComponent<Game>().NextTurn();
-
-            //Destroy the move plates including self
-            reference.GetComponent<Chessman>().DestroyMovePlates();
         }
         else if (type == MovePlateType.attack)
         {
             GameObject cp = controller.GetComponent<Game>().GetPosition(matrixX, matrixY);
             Chessman cm = cp.GetComponent<Chessman>();
 
-            if (cp.name == "white_king") controller.GetComponent<Game>().Winner("black");
-            if (cp.name == "black_king") controller.GetComponent<Game>().Winner("white");
-
-            Destroy(cp);
+            cm.DealDamage(me.GetDamage());
+            if (cm.GetHealth() <= 0) Destroy(cp);
         }
         else if (type == MovePlateType.heal)
         {
-            // TODO
             GameObject cp = controller.GetComponent<Game>().GetPosition(matrixX, matrixY);
             Chessman cm = cp.GetComponent<Chessman>();
 
-            if (cp.name == "white_king") controller.GetComponent<Game>().Winner("black");
-            if (cp.name == "black_king") controller.GetComponent<Game>().Winner("white");
-
+            cm.HealHealth();
         }
+
+        //Switch Current Player
+        controller.GetComponent<Game>().NextTurn();
+
+        //Destroy the move plates including self
+        reference.GetComponent<Chessman>().DestroyMovePlates();
     }
 
     public void SetCoords(int x, int y)

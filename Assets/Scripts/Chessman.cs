@@ -16,8 +16,8 @@ public class Chessman : MonoBehaviour
     // Variable representing the speed of a unit
     private int speed = 0;
     // Variable representing the kill range of a unit
-    private int minKillDistance = 1;
-    private int maxKillDistance = 1;
+    private int minKillDistance = 0;  // exclusive minimum
+    private int maxKillDistance = 1;  // inclusive maximum
     private bool lineOfSight = false;
     // Variable representing health
     private int health;
@@ -78,7 +78,7 @@ public class Chessman : MonoBehaviour
                 speed = 2;
                 maxHealth = health = 3;
                 damage = 2;
-                minKillDistance = 2;
+                minKillDistance = 1;
                 maxKillDistance = 4;
                 break;
             case "black_mage":
@@ -136,6 +136,38 @@ public class Chessman : MonoBehaviour
         yBoard = y;
     }
 
+    public int GetHealth()
+    {
+        return health;
+    }
+
+    public int GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public int GetDamage()
+    {
+        return damage;
+    }
+
+    public void DealDamage(int dealtDamage)
+    {
+        health = health - dealtDamage;
+        if (health < 0) health = 0;
+    }
+
+    public void HealHealth()
+    {
+        health = maxHealth;
+    }
+
+    public void HealHealth(int healing)
+    {
+        health = health + healing;
+        if (health > maxHealth) health = maxHealth;
+    }
+
     private void OnMouseUp()
     {
         if (!controller.GetComponent<Game>().IsGameOver() && controller.GetComponent<Game>().GetCurrentPlayer() == player)
@@ -173,8 +205,8 @@ public class Chessman : MonoBehaviour
         {
             for (int y = yBoard - maxKillDistance; y <= yBoard + maxKillDistance; y++)
             {
-                if (xBoard - minKillDistance <= x && x <= xBoard + minKillDistance
-                    && yBoard - minKillDistance <= y && y <= yBoard + minKillDistance)
+                if ((xBoard - minKillDistance <= x) && (x <= xBoard + minKillDistance)
+                    && (yBoard - minKillDistance <= y) && (y <= yBoard + minKillDistance))
                 {
                     continue;  // skip checking own position or below min kill distance
                 }
@@ -194,6 +226,7 @@ public class Chessman : MonoBehaviour
             }
         }
     }
+
     public void PointMovePlate(int x, int y)
     {
         Game sc = controller.GetComponent<Game>();
@@ -205,7 +238,7 @@ public class Chessman : MonoBehaviour
 
             if (cp == null)
             {
-                MovePlateSpawn(x, y);
+                MovePlateSpawn(x, y, MovePlateType.move);
             }
         }
     }
@@ -217,7 +250,7 @@ public class Chessman : MonoBehaviour
         {
             if (sc.GetPosition(x, y) != null && sc.GetPosition(x, y).GetComponent<Chessman>().player != player )
             {
-                MovePlateAttackSpawn(x, y);
+                MovePlateSpawn(x, y, MovePlateType.attack);
             }
         }
     }
@@ -229,12 +262,12 @@ public class Chessman : MonoBehaviour
         {
             if (sc.GetPosition(x, y) != null && sc.GetPosition(x, y).GetComponent<Chessman>().player == player )
             {
-                MovePlateHealSpawn(x, y);
+                MovePlateSpawn(x, y, MovePlateType.heal);
             }
         }
     }
 
-    public void MovePlateSpawn(int matrixX, int matrixY)
+    public void MovePlateSpawn(int matrixX, int matrixY, MovePlateType type = MovePlateType.move)
     {
         //Get the board value in order to convert to xy coords
         float x = matrixX;
@@ -252,52 +285,7 @@ public class Chessman : MonoBehaviour
         GameObject mp = Instantiate(movePlate, new Vector3(x, y, -3.0f), Quaternion.identity);
 
         MovePlate mpScript = mp.GetComponent<MovePlate>();
-        mpScript.SetReference(gameObject);
-        mpScript.SetCoords(matrixX, matrixY);
-    }
-
-    public void MovePlateAttackSpawn(int matrixX, int matrixY)
-    {
-        //Get the board value in order to convert to xy coords
-        float x = matrixX;
-        float y = matrixY;
-
-        //Adjust by variable offset
-        x *= 0.88f;
-        y *= 0.88f;
-
-        //Add constants (pos 0,0)
-        x += -6.64f;
-        y += -3.1f;
-
-        //Set actual unity values
-        GameObject mp = Instantiate(movePlate, new Vector3(x, y, -3.0f), Quaternion.identity);
-
-        MovePlate mpScript = mp.GetComponent<MovePlate>();
-        mpScript.type = MovePlateType.attack;
-        mpScript.SetReference(gameObject);
-        mpScript.SetCoords(matrixX, matrixY);
-    }
-
-    public void MovePlateHealSpawn(int matrixX, int matrixY)
-    {
-        //Get the board value in order to convert to xy coords
-        float x = matrixX;
-        float y = matrixY;
-
-        //Adjust by variable offset
-        x *= 0.88f;
-        y *= 0.88f;
-
-        //Add constants (pos 0,0)
-        x += -6.64f;
-        y += -3.1f;
-
-        //Set actual unity values
-        GameObject mp = Instantiate(movePlate, new Vector3(x, y, -3.0f), Quaternion.identity);
-
-        MovePlate mpScript = mp.GetComponent<MovePlate>();
-        mpScript.type = MovePlateType.heal;
+        mpScript.type = type;
         mpScript.SetReference(gameObject);
         mpScript.SetCoords(matrixX, matrixY);
     }
