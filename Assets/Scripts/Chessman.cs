@@ -257,7 +257,10 @@ public class Chessman : MonoBehaviour
         Game sc = controller.GetComponent<Game>();
         if (sc.PositionOnBoard(x, y))
         {
-            if (sc.GetPosition(x, y) != null && sc.GetPosition(x, y).GetComponent<Chessman>().player == player )
+            if (sc.GetPosition(x, y) == null) return;
+            Chessman other = sc.GetPosition(x, y).GetComponent<Chessman>();
+            // If piece is on our side and has below full health
+            if (other.player == player && other.GetHealth() < other.GetMaxHealth())
             {
                 MovePlateSpawn(x, y, MovePlateType.heal);
             }
