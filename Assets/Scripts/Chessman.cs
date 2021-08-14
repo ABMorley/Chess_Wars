@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -98,6 +98,13 @@ public class Chessman : MonoBehaviour
         }
     }
 
+    public void SetCoords(int x, int y)
+    {
+        SetXBoard(x);
+        SetYBoard(y);
+        SetCoords();
+    }
+
     public void SetCoords()
     {
         //Get the board value in order to convert to xy coords
@@ -173,20 +180,10 @@ public class Chessman : MonoBehaviour
         if (!controller.GetComponent<Game>().IsGameOver() && controller.GetComponent<Game>().GetCurrentPlayer() == player)
         {
             //Remove all moveplates relating to previously selected piece
-            DestroyMovePlates();
+            MovePlate.DestroyMovePlates();
 
             //Create new MovePlates
             InitiateMovePlates();
-        }
-    }
-
-    public void DestroyMovePlates()
-    {
-        //Destroy old MovePlates
-        GameObject[] movePlates = GameObject.FindGameObjectsWithTag("MovePlate");
-        for (int i = 0; i < movePlates.Length; i++)
-        {
-            Destroy(movePlates[i]); //Be careful with this function "Destroy" it is asynchronous
         }
     }
 

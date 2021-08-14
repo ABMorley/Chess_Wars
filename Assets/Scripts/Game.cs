@@ -116,6 +116,10 @@ public class Game : MonoBehaviour
             //Using UnityEngine.SceneManagement is needed here
             SceneManager.LoadScene("Game"); //Restarts the game by loading the scene over again
         }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            MovePlate.DestroyMovePlates();
+        }
     }
     
     public void Winner(string playerWinner)

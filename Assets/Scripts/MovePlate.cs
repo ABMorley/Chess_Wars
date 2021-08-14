@@ -55,9 +55,7 @@ public class MovePlate : MonoBehaviour
                 reference.GetComponent<Chessman>().GetYBoard());
 
             //Move reference chess piece to this position
-            me.SetXBoard(matrixX);
-            me.SetYBoard(matrixY);
-            me.SetCoords();
+            me.SetCoords(matrixX, matrixY);
 
             //Update the matrix
             controller.GetComponent<Game>().SetPosition(reference);
@@ -82,7 +80,7 @@ public class MovePlate : MonoBehaviour
         controller.GetComponent<Game>().NextTurn();
 
         //Destroy the move plates including self
-        reference.GetComponent<Chessman>().DestroyMovePlates();
+        MovePlate.DestroyMovePlates();
     }
 
     public void SetCoords(int x, int y)
@@ -99,5 +97,15 @@ public class MovePlate : MonoBehaviour
     public GameObject GetReference()
     {
         return reference;
+    }
+
+    static public void DestroyMovePlates()
+    {
+        //Destroy old MovePlates
+        GameObject[] movePlates = GameObject.FindGameObjectsWithTag("MovePlate");
+        for (int i = 0; i < movePlates.Length; i++)
+        {
+            Destroy(movePlates[i]); //Be careful with this function "Destroy" it is asynchronous
+        }
     }
 }
