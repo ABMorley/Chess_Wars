@@ -14,7 +14,7 @@ low health = 3 hp
 medium health = 6 hp
 high health = 10 hp	
 
-Footsoldier		medium health	low damage		low speed		=	4
+Footsoldier		medium health	low damage		medium speed	=	5
 Archer			low health		medium damage	medium speed	=	5
 Castle			high health		low damage		low speed		=	5
 Cavalry			medium health	medium damage	high speed		=	7
@@ -42,3 +42,5 @@ Point choosing? (30, 40, 50?)
 Energy meter to avoid spamming one unit?
 Choice of unit colour
 Health bar that appears when unit is selected
+base catupult attack
+sound effects

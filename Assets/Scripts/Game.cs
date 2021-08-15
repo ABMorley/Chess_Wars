@@ -142,6 +142,21 @@ public class Game : MonoBehaviour
 
     public void NextTurn()
     {
+        if (currentTurn == PlayerTurn.whiteAttack)
+        {
+            foreach (GameObject piece in playerWhite)
+            {
+                piece.GetComponent<Chessman>().ReduceHealCooldown();
+            }
+        }
+        else if (currentTurn == PlayerTurn.blackAttack)
+        {
+            foreach (GameObject piece in playerBlack)
+            {
+                piece.GetComponent<Chessman>().ReduceHealCooldown();
+            }
+        }
+
         switch (currentTurn)
         {
             case PlayerTurn.whiteMove:

@@ -74,6 +74,7 @@ public class MovePlate : MonoBehaviour
             Chessman cm = cp.GetComponent<Chessman>();
 
             cm.HealHealth();
+            me.SetHealCooldown();
         }
 
         //Switch Current Player

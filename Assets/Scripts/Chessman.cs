@@ -26,6 +26,9 @@ public class Chessman : MonoBehaviour
     private int damage;
     // Variable representing heal distance, or -1 to disable
     private int healDistance = -1;
+    // Variable representing heal cooldown in turns
+    private int healCooldown = 0;
+    private int maxHealCooldown = 2;
 
     //Variable for keeping track of the player it belongs to "black" or "white"
     private PlayerSide player;
@@ -69,7 +72,7 @@ public class Chessman : MonoBehaviour
                 break;
             case "black_foot_soldier":
             case "white_foot_soldier":
-                speed = 1;
+                speed = 2;
                 maxHealth = health = 6;
                 damage = 1;
                 break;
@@ -77,7 +80,7 @@ public class Chessman : MonoBehaviour
             case "white_archer":
                 speed = 2;
                 maxHealth = health = 3;
-                damage = 2;
+                damage = 3;
                 minKillDistance = 1;
                 maxKillDistance = 4;
                 break;
@@ -85,9 +88,10 @@ public class Chessman : MonoBehaviour
             case "white_mage":
                 speed = 2;
                 maxHealth = health = 3;
-                damage = 3;
+                damage = 2;
                 lineOfSight = true;
                 healDistance = 1;
+                maxHealCooldown = 2;
                 break;
             case "black_cavalry":
             case "white_cavalry":
@@ -173,6 +177,21 @@ public class Chessman : MonoBehaviour
     {
         health = health + healing;
         if (health > maxHealth) health = maxHealth;
+    }
+
+    public void ReduceHealCooldown()
+    {
+        if (healCooldown > 0) healCooldown--;
+    }
+
+    public void SetHealCooldown()
+    {
+        healCooldown = maxHealCooldown;
+    }
+
+    public bool CheckHealCooldown()
+    {
+        return healCooldown > 0;
     }
 
     private void OnMouseUp()
@@ -269,6 +288,8 @@ public class Chessman : MonoBehaviour
 
     public void PointHealPlate(int x, int y)
     {
+        if (CheckHealCooldown()) return;
+
         Game sc = controller.GetComponent<Game>();
         if (sc.PositionOnBoard(x, y))
         {
