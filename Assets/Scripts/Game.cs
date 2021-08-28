@@ -146,14 +146,14 @@ public class Game : MonoBehaviour
         {
             foreach (GameObject piece in playerWhite)
             {
-                piece.GetComponent<Chessman>().ReduceHealCooldown();
+                if (piece != null) piece.GetComponent<Chessman>().ReduceHealCooldown();
             }
         }
         else if (currentTurn == PlayerTurn.blackAttack)
         {
             foreach (GameObject piece in playerBlack)
             {
-                piece.GetComponent<Chessman>().ReduceHealCooldown();
+                if (piece != null) piece.GetComponent<Chessman>().ReduceHealCooldown();
             }
         }
 
