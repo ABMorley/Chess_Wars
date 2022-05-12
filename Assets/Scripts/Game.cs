@@ -46,17 +46,17 @@ public class Game : MonoBehaviour
     //that Unity can call for you
     public void Start()
     {
-        playerWhite = new GameObject[] { Create("white_mage", 0, 0), Create("white_archer", 0, 1), 
-            Create("white_archer", 0, 2), Create("white_bottom_main_castle", 0, 3), Create("white_top_main_castle", 0, 4), 
-            Create("white_archer", 0, 5), Create("white_archer", 0, 6), Create("white_mage", 0, 7), 
-            Create("white_castle", 1, 0), Create("white_cavalry", 1, 1), Create("white_foot_soldier", 1, 2), 
-            Create("white_foot_soldier", 1, 3), Create("white_foot_soldier", 1, 4), Create("white_foot_soldier", 1, 5), 
+        playerWhite = new GameObject[] { Create("white_mage", 0, 0), Create("white_archer", 0, 1),
+            Create("white_archer", 0, 2), Create("white_bottom_main_castle", 0, 3), Create("white_top_main_castle", 0, 4),
+            Create("white_archer", 0, 5), Create("white_archer", 0, 6), Create("white_mage", 0, 7),
+            Create("white_castle", 1, 0), Create("white_cavalry", 1, 1), Create("white_foot_soldier", 1, 2),
+            Create("white_foot_soldier", 1, 3), Create("white_foot_soldier", 1, 4), Create("white_foot_soldier", 1, 5),
             Create("white_cavalry", 1, 6), Create("white_castle", 1, 7) };
         playerBlack = new GameObject[] { Create("black_mage", 15, 0), Create("black_archer",15,1),
-            Create("black_archer",15,2), Create("black_main_castle",15,3), Create("black_archer",15,5), 
-            Create("black_archer",15,6), Create("black_mage",15,7), Create("black_castle", 14, 0), 
-            Create("black_cavalry", 14, 1), Create("black_foot_soldier", 14, 2),Create("black_foot_soldier", 14, 3), 
-            Create("black_foot_soldier", 14, 4), Create("black_foot_soldier", 14, 5),Create("black_cavalry", 14, 6), 
+            Create("black_archer",15,2), Create("black_main_castle",15,3), Create("black_archer",15,5),
+            Create("black_archer",15,6), Create("black_mage",15,7), Create("black_castle", 14, 0),
+            Create("black_cavalry", 14, 1), Create("black_foot_soldier", 14, 2),Create("black_foot_soldier", 14, 3),
+            Create("black_foot_soldier", 14, 4), Create("black_foot_soldier", 14, 5),Create("black_cavalry", 14, 6),
             Create("black_castle", 14, 7) };
 
         //Set all piece positions on the positions board
@@ -173,6 +173,12 @@ public class Game : MonoBehaviour
         Debug.Log($"Current turn: {currentTurn}");
     }
 
+    public void SkipCurrentTurn()
+    {
+        MovePlate.DestroyMovePlates();
+        NextTurn();
+    }
+
     public void Update()
     {
         if (gameOver == true && Input.GetMouseButtonDown(0))
@@ -192,7 +198,7 @@ public class Game : MonoBehaviour
             NextTurn();  // TODO: add skip turn button or other solution
         }
     }
-    
+
     public void Winner(string playerWinner)
     {
         gameOver = true;
