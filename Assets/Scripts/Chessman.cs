@@ -67,37 +67,37 @@ public class Chessman : MonoBehaviour
             case "black_castle":
             case "white_castle":
                 speed = 1;
-                maxHealth = health = 10;
-                damage = 1;
+                maxHealth = health = 100;
+                damage = 10;
                 break;
             case "black_foot_soldier":
             case "white_foot_soldier":
                 speed = 2;
-                maxHealth = health = 6;
-                damage = 1;
+                maxHealth = health = 60;
+                damage = 10;
                 break;
             case "black_archer":
             case "white_archer":
                 speed = 2;
-                maxHealth = health = 3;
-                damage = 3;
+                maxHealth = health = 30;
+                damage = 30;
                 minKillDistance = 1;
                 maxKillDistance = 4;
                 break;
             case "black_mage":
             case "white_mage":
                 speed = 2;
-                maxHealth = health = 3;
-                damage = 2;
+                maxHealth = health = 30;
+                damage = 20;
                 lineOfSight = true;
                 healDistance = 1;
-                maxHealCooldown = 2;
+                maxHealCooldown = 20;
                 break;
             case "black_cavalry":
             case "white_cavalry":
                 speed = 3;
-                maxHealth = health = 6;
-                damage = 2;
+                maxHealth = health = 60;
+                damage = 20;
                 break;
         }
     }
