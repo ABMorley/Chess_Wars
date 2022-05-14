@@ -82,6 +82,7 @@ public class MovePlate : MonoBehaviour
 
         //Destroy the move plates including self
         MovePlate.DestroyMovePlates();
+        HealthBar.DestroyHealthBar();
     }
 
     public void SetCoords(int x, int y)

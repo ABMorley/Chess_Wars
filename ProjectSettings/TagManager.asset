@@ -7,6 +7,8 @@ TagManager:
   - MovePlate
   - WinnerText
   - RestartText
+  - Canvas
+  - HealthBar
   layers:
   - Default
   - TransparentFX

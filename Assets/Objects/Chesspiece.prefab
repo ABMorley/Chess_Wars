@@ -71,7 +71,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: e805a97877d4c8a4ca5ad67ee61f2d37, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -97,6 +97,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   movePlate: {fileID: 4427528937630144105, guid: 975cd21375dfdf440977be8479f87330,
+    type: 3}
+  healthBar: {fileID: 3219978110716146330, guid: 7d09905c062edfb43853c1dfb38ee2d8,
     type: 3}
   black_main_castle: {fileID: 21300000, guid: 13add676c531eb848b92bcb823609d4a, type: 3}
   black_cavalry: {fileID: 21300000, guid: a1f14d99584a32845bff5722f459abc3, type: 3}
@@ -130,7 +132,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.2, y: 0.2}
+    oldSize: {x: 0.32, y: 0.32}
     newSize: {x: 0.2, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

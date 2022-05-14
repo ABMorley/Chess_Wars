@@ -176,6 +176,7 @@ public class Game : MonoBehaviour
     public void SkipCurrentTurn()
     {
         MovePlate.DestroyMovePlates();
+        HealthBar.DestroyHealthBar();
         NextTurn();
     }
 
@@ -191,10 +192,12 @@ public class Game : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             MovePlate.DestroyMovePlates();
+            HealthBar.DestroyHealthBar();
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             MovePlate.DestroyMovePlates();
+            HealthBar.DestroyHealthBar();
             NextTurn();  // TODO: add skip turn button or other solution
         }
     }

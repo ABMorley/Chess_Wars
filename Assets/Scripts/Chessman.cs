@@ -7,6 +7,7 @@ public class Chessman : MonoBehaviour
     //References to objects in our Unity Scene
     public GameObject controller;
     public GameObject movePlate;
+    public GameObject healthBar;
 
     //Position for this Chesspiece on the Board
     //The correct position will be set later
@@ -200,9 +201,13 @@ public class Chessman : MonoBehaviour
         {
             //Remove all moveplates relating to previously selected piece
             MovePlate.DestroyMovePlates();
+            HealthBar.DestroyHealthBar();
 
             //Create new MovePlates
             InitiateMovePlates();
+
+            // Show health bar
+            InitiateHealthBar();
         }
     }
 
@@ -216,36 +221,36 @@ public class Chessman : MonoBehaviour
             InitiateMovePlates(PointMovePlate, speed, excludeSelf: true);
         }
         else if (turnType == TurnType.attack)
-            {
+        {
             InitiateMovePlates(PointAttackPlate, minKillDistance, maxKillDistance);
 
             if (healDistance >= 0)
             {
                 InitiateMovePlates(PointHealPlate, healDistance, excludeSelf: false);
             }
-            }
         }
+    }
 
     public void InitiateMovePlates(PointAnyPlate plateType, int maxRange, bool excludeSelf = false)
-        {
+    {
         for (int x = xBoard - maxRange; x <= xBoard + maxRange; x++)
-            {
+        {
             for (int y = yBoard - maxRange; y <= yBoard + maxRange; y++)
-                {
+            {
                 if (excludeSelf && (x == xBoard) && (y == yBoard)) continue;  // skip checking own position
                 plateType(x, y);
-                }
             }
         }
+    }
 
     /// <param name="minRange">The exclusive minimum distance, so 1 means it must be 2 or more squares away</param>
     /// <param name="maxRange">The inclusive maximum distance, so 4 means it must be 4 or fewer squares away</param>
     public void InitiateMovePlates(PointAnyPlate plateType, int minRange, int maxRange)
-        {
+    {
         for (int x = xBoard - maxRange; x <= xBoard + maxRange; x++)
-            {
+        {
             for (int y = yBoard - maxRange; y <= yBoard + maxRange; y++)
-                {
+            {
                 if ((xBoard - minRange <= x) && (x <= xBoard + minRange)
                     && (yBoard - minRange <= y) && (y <= yBoard + minRange))
                 {
@@ -279,7 +284,7 @@ public class Chessman : MonoBehaviour
         Game sc = controller.GetComponent<Game>();
         if (sc.PositionOnBoard(x, y))
         {
-            if (sc.GetPosition(x, y) != null && sc.GetPosition(x, y).GetComponent<Chessman>().player != player )
+            if (sc.GetPosition(x, y) != null && sc.GetPosition(x, y).GetComponent<Chessman>().player != player)
             {
                 MovePlateSpawn(x, y, MovePlateType.attack);
             }
@@ -303,6 +308,11 @@ public class Chessman : MonoBehaviour
         }
     }
 
+    const float BOX_WIDTH = 0.88f;
+    const float BOX_HEIGHT = 0.88f;
+    const float BOX_OFFSET_X = -6.6f;
+    const float BOX_OFFSET_Y = -3.0f;
+
     public void MovePlateSpawn(int matrixX, int matrixY, MovePlateType type = MovePlateType.move)
     {
         //Get the board value in order to convert to xy coords
@@ -310,12 +320,12 @@ public class Chessman : MonoBehaviour
         float y = matrixY;
 
         //Adjust by variable offset
-        x *= 0.88f;
-        y *= 0.88f;
+        x *= BOX_WIDTH;
+        y *= BOX_HEIGHT;
 
         //Add constants (pos 0,0)
-        x += -6.64f;
-        y += -3.1f;
+        x += BOX_OFFSET_X;
+        y += BOX_OFFSET_Y;
 
         //Set actual unity values
         GameObject mp = Instantiate(movePlate, new Vector3(x, y, -3.0f), Quaternion.identity);
@@ -324,5 +334,31 @@ public class Chessman : MonoBehaviour
         mpScript.type = type;
         mpScript.SetReference(gameObject);
         mpScript.SetCoords(matrixX, matrixY);
+    }
+
+    public void InitiateHealthBar()
+    {
+        //Get the board value in order to convert to xy coords
+        float x = xBoard;
+        float y = yBoard;
+
+        //Adjust by variable offset
+        x *= BOX_WIDTH;
+        y *= BOX_HEIGHT;
+
+        //Add constants (pos 0,0)
+        x += BOX_OFFSET_X;
+        y += BOX_OFFSET_Y;
+
+        y -= BOX_HEIGHT / 2.75f;
+
+        //Set actual unity values
+        GameObject hb = Instantiate(healthBar, new Vector3(x, y, -3.0f), Quaternion.identity);
+
+        HealthBar hbScript = hb.GetComponent<HealthBar>();
+        hbScript.SetReference(gameObject);
+        hbScript.SetCoords(xBoard, yBoard);
+        hbScript.SetMaxHealth(maxHealth);
+        hbScript.SetHealth(health);
     }
 }
