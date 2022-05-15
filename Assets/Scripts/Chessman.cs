@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -308,10 +308,12 @@ public class Chessman : MonoBehaviour
         }
     }
 
+    const int BOX_COUNT_WIDTH = 16;
+    const int BOX_COUNT_HEIGHT = 8;
     const float BOX_WIDTH = 0.88f;
     const float BOX_HEIGHT = 0.88f;
-    const float BOX_OFFSET_X = -6.6f;
-    const float BOX_OFFSET_Y = -3.08f;
+    const float BOX_OFFSET_X = -BOX_WIDTH * (BOX_COUNT_WIDTH - 1f) / 2;
+    const float BOX_OFFSET_Y = -BOX_HEIGHT * (BOX_COUNT_HEIGHT - 1f) / 2;
 
     public void MovePlateSpawn(int matrixX, int matrixY, MovePlateType type = MovePlateType.move)
     {
@@ -350,7 +352,7 @@ public class Chessman : MonoBehaviour
         x += BOX_OFFSET_X;
         y += BOX_OFFSET_Y;
 
-        y -= BOX_HEIGHT / 2.75f;
+        y += -BOX_HEIGHT / 2 + 0.16f;
 
         //Set actual unity values
         GameObject hb = Instantiate(healthBar, new Vector3(x, y, -3.0f), Quaternion.identity);
