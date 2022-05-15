@@ -117,12 +117,12 @@ public class Chessman : MonoBehaviour
         float y = yBoard;
 
         //Adjust by variable offset
-        x *= 0.88f;
-        y *= 0.88f;
+        x *= BOX_WIDTH;
+        y *= BOX_HEIGHT;
 
         //Add constants (pos 0,0)
-        x += -6.64f;
-        y += -3.1f;
+        x += BOX_OFFSET_X;
+        y += BOX_OFFSET_Y;
 
         //Set actual unity values
         this.transform.position = new Vector3(x, y, -1.0f);
@@ -311,7 +311,7 @@ public class Chessman : MonoBehaviour
     const float BOX_WIDTH = 0.88f;
     const float BOX_HEIGHT = 0.88f;
     const float BOX_OFFSET_X = -6.6f;
-    const float BOX_OFFSET_Y = -3.0f;
+    const float BOX_OFFSET_Y = -3.08f;
 
     public void MovePlateSpawn(int matrixX, int matrixY, MovePlateType type = MovePlateType.move)
     {
