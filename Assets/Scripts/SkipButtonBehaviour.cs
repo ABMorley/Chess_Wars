@@ -16,7 +16,6 @@ public class SkipButtonBehaviour : MonoBehaviour
     public void OnButtonPress()
     {
         Debug.Log("OnButtonPress");
-        GameObject controller = GameObject.FindGameObjectWithTag("GameController");
-        controller.GetComponent<Game>().SkipCurrentTurn();
+        Singleton.Game.SkipCurrentTurn();
     }
 }

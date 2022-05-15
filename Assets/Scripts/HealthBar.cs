@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    //Some functions will need reference to the controller
-    public GameObject controller;
-
     //The Chesspiece that was tapped to create this MovePlate
     GameObject reference = null;
 

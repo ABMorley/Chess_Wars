@@ -12,9 +12,6 @@ public enum MovePlateType
 
 public class MovePlate : MonoBehaviour
 {
-    //Some functions will need reference to the controller
-    public GameObject controller;
-
     //The Chesspiece that was tapped to create this MovePlate
     GameObject reference = null;
 
@@ -26,43 +23,42 @@ public class MovePlate : MonoBehaviour
 
     public void Start()
     {
-        if (type == MovePlateType.move)
+        switch (type)
         {
-            // Set to black
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-        }
-        else if (type == MovePlateType.attack)
-        {
-            // Set to red
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-        }
-        else if (type == MovePlateType.heal)
-        {
-            // Set to purple
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(0.7f, 0.2f, 1.0f, 1.0f);
+            case MovePlateType.move:
+                // Set to black
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+                break;
+            case MovePlateType.attack:
+                // Set to red
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                break;
+            case MovePlateType.heal:
+                // Set to purple
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(0.7f, 0.2f, 1.0f, 1.0f);
+                break;
         }
     }
 
     public void OnMouseUp()
     {
-        controller = GameObject.FindGameObjectWithTag("GameController");
+        GameObject controller = Singleton.GameController;
         Chessman me = reference.GetComponent<Chessman>();
 
         if (type == MovePlateType.move)
         {
             //Set the Chesspiece's original location to be empty
-            controller.GetComponent<Game>().SetPositionEmpty(reference.GetComponent<Chessman>().GetXBoard(), 
-                reference.GetComponent<Chessman>().GetYBoard());
+            Singleton.Game.SetPositionEmpty(me.GetXBoard(), me.GetYBoard());
 
             //Move reference chess piece to this position
             me.SetCoords(matrixX, matrixY);
 
             //Update the matrix
-            controller.GetComponent<Game>().SetPosition(reference);
+            Singleton.Game.SetPosition(reference);
         }
         else if (type == MovePlateType.attack)
         {
-            GameObject cp = controller.GetComponent<Game>().GetPosition(matrixX, matrixY);
+            GameObject cp = Singleton.Game.GetPosition(matrixX, matrixY);
             Chessman cm = cp.GetComponent<Chessman>();
 
             cm.DealDamage(me.GetDamage());
@@ -70,7 +66,7 @@ public class MovePlate : MonoBehaviour
         }
         else if (type == MovePlateType.heal)
         {
-            GameObject cp = controller.GetComponent<Game>().GetPosition(matrixX, matrixY);
+            GameObject cp = Singleton.Game.GetPosition(matrixX, matrixY);
             Chessman cm = cp.GetComponent<Chessman>();
 
             cm.HealHealth();
@@ -78,11 +74,10 @@ public class MovePlate : MonoBehaviour
         }
 
         //Switch Current Player
-        controller.GetComponent<Game>().NextTurn();
+        Singleton.Game.NextTurn();
 
         //Destroy the move plates including self
-        MovePlate.DestroyMovePlates();
-        HealthBar.DestroyHealthBar();
+        Game.ClearTurnElements();
     }
 
     public void SetCoords(int x, int y)

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Chessman : MonoBehaviour
 {
     //References to objects in our Unity Scene
-    public GameObject controller;
     public GameObject movePlate;
     public GameObject healthBar;
 
@@ -41,27 +40,28 @@ public class Chessman : MonoBehaviour
     public void Activate()
     {
         //Get the game controller
-        controller = GameObject.FindGameObjectWithTag("GameController");
+        GameObject controller = Singleton.GameController;
 
         //Take the instantiated location and adjust transform
-        SetCoords();
+        SetPositionFromCoords();
 
         //Choose correct sprite based on piece's name
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         switch (this.name)
         {
-            case "black_main_castle": this.GetComponent<SpriteRenderer>().sprite = black_main_castle; player = PlayerSide.black; break;
-            case "black_cavalry": this.GetComponent<SpriteRenderer>().sprite = black_cavalry; player = PlayerSide.black; break;
-            case "black_archer": this.GetComponent<SpriteRenderer>().sprite = black_archer; player = PlayerSide.black; break;
-            case "black_mage": this.GetComponent<SpriteRenderer>().sprite = black_mage; player = PlayerSide.black; break;
-            case "black_castle": this.GetComponent<SpriteRenderer>().sprite = black_castle; player = PlayerSide.black; break;
-            case "black_foot_soldier": this.GetComponent<SpriteRenderer>().sprite = black_foot_soldier; player = PlayerSide.black; break;
-            case "white_bottom_main_castle": this.GetComponent<SpriteRenderer>().sprite = white_bottom_main_castle; player = PlayerSide.white; break;
-            case "white_top_main_castle": this.GetComponent<SpriteRenderer>().sprite = white_top_main_castle; player = PlayerSide.white; break;
-            case "white_cavalry": this.GetComponent<SpriteRenderer>().sprite = white_cavalry; player = PlayerSide.white; break;
-            case "white_archer": this.GetComponent<SpriteRenderer>().sprite = white_archer; player = PlayerSide.white; break;
-            case "white_mage": this.GetComponent<SpriteRenderer>().sprite = white_mage; player = PlayerSide.white; break;
-            case "white_castle": this.GetComponent<SpriteRenderer>().sprite = white_castle; player = PlayerSide.white; break;
-            case "white_foot_soldier": this.GetComponent<SpriteRenderer>().sprite = white_foot_soldier; player = PlayerSide.white; break;
+            case "black_main_castle": spriteRenderer.sprite = black_main_castle; player = PlayerSide.black; break;
+            case "black_cavalry": spriteRenderer.sprite = black_cavalry; player = PlayerSide.black; break;
+            case "black_archer": spriteRenderer.sprite = black_archer; player = PlayerSide.black; break;
+            case "black_mage": spriteRenderer.sprite = black_mage; player = PlayerSide.black; break;
+            case "black_castle": spriteRenderer.sprite = black_castle; player = PlayerSide.black; break;
+            case "black_foot_soldier": spriteRenderer.sprite = black_foot_soldier; player = PlayerSide.black; break;
+            case "white_bottom_main_castle": spriteRenderer.sprite = white_bottom_main_castle; player = PlayerSide.white; break;
+            case "white_top_main_castle": spriteRenderer.sprite = white_top_main_castle; player = PlayerSide.white; break;
+            case "white_cavalry": spriteRenderer.sprite = white_cavalry; player = PlayerSide.white; break;
+            case "white_archer": spriteRenderer.sprite = white_archer; player = PlayerSide.white; break;
+            case "white_mage": spriteRenderer.sprite = white_mage; player = PlayerSide.white; break;
+            case "white_castle": spriteRenderer.sprite = white_castle; player = PlayerSide.white; break;
+            case "white_foot_soldier": spriteRenderer.sprite = white_foot_soldier; player = PlayerSide.white; break;
         }
         switch (this.name)
         {
@@ -107,10 +107,10 @@ public class Chessman : MonoBehaviour
     {
         SetXBoard(x);
         SetYBoard(y);
-        SetCoords();
+        SetPositionFromCoords();
     }
 
-    public void SetCoords()
+    public void SetPositionFromCoords()
     {
         //Get the board value in order to convert to xy coords
         float x = xBoard;
@@ -128,25 +128,11 @@ public class Chessman : MonoBehaviour
         this.transform.position = new Vector3(x, y, -1.0f);
     }
 
-    public int GetXBoard()
-    {
-        return xBoard;
-    }
+    public int GetXBoard() => xBoard;
+    public int GetYBoard() => yBoard;
 
-    public int GetYBoard()
-    {
-        return yBoard;
-    }
-
-    public void SetXBoard(int x)
-    {
-        xBoard = x;
-    }
-
-    public void SetYBoard(int y)
-    {
-        yBoard = y;
-    }
+    public void SetXBoard(int x) => xBoard = x;
+    public void SetYBoard(int y) => yBoard = y;
 
     public int GetHealth()
     {
@@ -197,11 +183,10 @@ public class Chessman : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!controller.GetComponent<Game>().IsGameOver() && controller.GetComponent<Game>().GetCurrentPlayer() == player)
+        if (!Singleton.Game.IsGameOver() && Singleton.Game.GetCurrentPlayer() == player)
         {
             //Remove all moveplates relating to previously selected piece
-            MovePlate.DestroyMovePlates();
-            HealthBar.DestroyHealthBar();
+            Game.ClearTurnElements();
 
             //Create new MovePlates
             InitiateMovePlates();
@@ -213,8 +198,7 @@ public class Chessman : MonoBehaviour
 
     public void InitiateMovePlates()
     {
-        Game game = controller.GetComponent<Game>();
-        TurnType turnType = game.GetCurrentTurnType();
+        TurnType turnType = Singleton.Game.GetCurrentTurnType();
 
         if (turnType == TurnType.move)
         {
@@ -265,10 +249,10 @@ public class Chessman : MonoBehaviour
 
     public void PointMovePlate(int x, int y)
     {
-        Game sc = controller.GetComponent<Game>();
-        if (sc.PositionOnBoard(x, y))
+        Game game = Singleton.Game;
+        if (game.PositionOnBoard(x, y))
         {
-            GameObject cp = sc.GetPosition(x, y);
+            GameObject cp = game.GetPosition(x, y);
 
             // Debug.Log($"{x}, {y}, {cp}");
 
@@ -281,10 +265,10 @@ public class Chessman : MonoBehaviour
 
     public void PointAttackPlate(int x, int y)
     {
-        Game sc = controller.GetComponent<Game>();
-        if (sc.PositionOnBoard(x, y))
+        Game game = Singleton.Game;
+        if (game.PositionOnBoard(x, y))
         {
-            if (sc.GetPosition(x, y) != null && sc.GetPosition(x, y).GetComponent<Chessman>().player != player)
+            if (game.GetPosition(x, y) != null && game.GetPosition(x, y).GetComponent<Chessman>().player != player)
             {
                 MovePlateSpawn(x, y, MovePlateType.attack);
             }
@@ -295,11 +279,11 @@ public class Chessman : MonoBehaviour
     {
         if (CheckHealCooldown()) return;
 
-        Game sc = controller.GetComponent<Game>();
-        if (sc.PositionOnBoard(x, y))
+        Game game = Singleton.Game;
+        if (game.PositionOnBoard(x, y))
         {
-            if (sc.GetPosition(x, y) == null) return;
-            Chessman other = sc.GetPosition(x, y).GetComponent<Chessman>();
+            if (game.GetPosition(x, y) == null) return;
+            Chessman other = game.GetPosition(x, y).GetComponent<Chessman>();
             // If piece is on our side and has below full health
             if (other.player == player && other.GetHealth() < other.GetMaxHealth())
             {

@@ -33,8 +33,8 @@ public class Game : MonoBehaviour
     //Also separate arrays for the players in order to easily keep track of them all
     //Keep in mind that the same objects are going to be in "positions" and "playerBlack"/"playerWhite"
     private GameObject[,] positions = new GameObject[16, 8];
-    private GameObject[] playerBlack = new GameObject[16];
-    private GameObject[] playerWhite = new GameObject[16];
+    private GameObject[] playerBlack;
+    private GameObject[] playerWhite;
 
     //current turn
     private PlayerTurn currentTurn = PlayerTurn.whiteMove;
@@ -173,10 +173,15 @@ public class Game : MonoBehaviour
         Debug.Log($"Current turn: {currentTurn}");
     }
 
-    public void SkipCurrentTurn()
+    public static void ClearTurnElements()
     {
         MovePlate.DestroyMovePlates();
         HealthBar.DestroyHealthBar();
+    }
+
+    public void SkipCurrentTurn()
+    {
+        ClearTurnElements();
         NextTurn();
     }
 
@@ -191,14 +196,11 @@ public class Game : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            MovePlate.DestroyMovePlates();
-            HealthBar.DestroyHealthBar();
+            ClearTurnElements();
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            MovePlate.DestroyMovePlates();
-            HealthBar.DestroyHealthBar();
-            NextTurn();  // TODO: add skip turn button or other solution
+            SkipCurrentTurn();
         }
     }
 
