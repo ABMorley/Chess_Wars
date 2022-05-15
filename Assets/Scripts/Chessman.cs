@@ -92,7 +92,7 @@ public class Chessman : MonoBehaviour
                 damage = 20;
                 lineOfSight = true;
                 healDistance = 1;
-                maxHealCooldown = 20;
+                maxHealCooldown = 2;
                 break;
             case "black_cavalry":
             case "white_cavalry":
