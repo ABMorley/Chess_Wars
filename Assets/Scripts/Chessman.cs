@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +23,7 @@ public class Chessman : MonoBehaviour
     private int health;
     private int maxHealth;
     // Variable representing attack damage
-    private int damage;
+    private int baseDamage;
     // Variable representing heal distance, or -1 to disable
     private int healDistance = -1;
     // Variable representing heal cooldown in turns
@@ -69,19 +69,19 @@ public class Chessman : MonoBehaviour
             case "white_castle":
                 speed = 1;
                 maxHealth = health = 100;
-                damage = 10;
+                baseDamage = 10;
                 break;
             case "black_foot_soldier":
             case "white_foot_soldier":
                 speed = 2;
                 maxHealth = health = 60;
-                damage = 10;
+                baseDamage = 10;
                 break;
             case "black_archer":
             case "white_archer":
                 speed = 2;
                 maxHealth = health = 30;
-                damage = 30;
+                baseDamage = 30;
                 minKillDistance = 1;
                 maxKillDistance = 4;
                 break;
@@ -89,7 +89,7 @@ public class Chessman : MonoBehaviour
             case "white_mage":
                 speed = 2;
                 maxHealth = health = 30;
-                damage = 20;
+                baseDamage = 20;
                 lineOfSight = true;
                 healDistance = 1;
                 maxHealCooldown = 2;
@@ -98,7 +98,7 @@ public class Chessman : MonoBehaviour
             case "white_cavalry":
                 speed = 3;
                 maxHealth = health = 60;
-                damage = 20;
+                baseDamage = 20;
                 break;
         }
     }
@@ -144,9 +144,12 @@ public class Chessman : MonoBehaviour
         return maxHealth;
     }
 
+    const float DamageVariableMin = 0.75f;
+    const float DamageVariableMax = 1.25f;
+
     public int GetDamage()
     {
-        return damage;
+        return (int)(baseDamage * Random.Range(DamageVariableMin, DamageVariableMax));
     }
 
     public void DealDamage(int dealtDamage)
