@@ -13,6 +13,8 @@ public class HealthBar : MonoBehaviour
     int matrixY;
 
     public Slider slider;
+    public Gradient gradient;
+    public Image fill;
 
     public GameObject canvas
     {
@@ -28,11 +30,15 @@ public class HealthBar : MonoBehaviour
     {
         slider.maxValue = health;
         slider.value = health;
+
+        fill.color = gradient.Evaluate(1f);
     }
 
     public void SetHealth(int health)
     {
         slider.value = health;
+
+        fill.color = gradient.Evaluate(slider.normalizedValue);
     }
 
     public void SetCoords(int x, int y)
