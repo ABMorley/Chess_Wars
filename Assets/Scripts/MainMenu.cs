@@ -5,23 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-
     public string PlayScene;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void Play()
     {
         SceneManager.LoadScene(PlayScene);
+    }
+
+    public void ShowOptions()
+    {
+        // TODO: Add options?
     }
 
     public void Quit()

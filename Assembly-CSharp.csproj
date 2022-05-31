@@ -38,6 +38,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Game\SkipButtonBehaviour.cs" />
      <Compile Include="Assets\Scripts\Game\Game.cs" />
+     <Compile Include="Assets\Scripts\FitCamera.cs" />
      <Compile Include="Assets\Scripts\MainMenu.cs" />
      <Compile Include="Assets\Scripts\Game\HealthBar.cs" />
      <Compile Include="Assets\Scripts\Game\Chessman.cs" />
